@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title> Add links to images </title>
+    <script>
+      function GetJobInfo(){
+        var xhrs = new XMLHttpRequest();
+          
+          xhrs.onreadystatechange = function(){
+            if(this.readyState ==4 && this.status == 200){
+              document.getElementById("result").innerHTML = xhrs.responseText; // response from the server
+            }
+          }
+          xhrs.open("POST","/stopServer",true);
+          xhrs.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhrs.send();
+      }
+      function UploadFormater(){ //converts string to json object
+        var val = document.getElementById("link").value;
+        if(val == ''){
+          alert("input cannot be empty");
+
+          // for testing purpose
+          var xhrs = new XMLHttpRequest();
+          
+          xhrs.onreadystatechange = function(){
+            if(this.readyState ==4 && this.status == 200){
+              document.getElementById("result").innerHTML = xhrs.responseText; // response from the server
+            }
+          }
+          xhrs.open("POST","/stopServer",true);
+          xhrs.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhrs.send();
+
+        }else{
+          var strarr = val.split(','); // array of the input
+          //str.forEach(function(s){ //TODO: remove, for testing
+            //console.log(s);
+            //document.getElementById("result").innerHTML += s+"\n";
+          //});
+
+          var url_obj = { "urls": strarr};
+          var json_url = JSON.stringify(url_obj);
+          //document.getElementById("result").innerHTML = json_url;
+          //call POST method to Upload
+          
+          var xhrs = new XMLHttpRequest();
+          
+          xhrs.onreadystatechange = function(){
+            if(this.readyState ==4 && this.status == 200){
+              document.getElementById("result").innerHTML = xhrs.responseText; // response from the server
+            }
+          }
+          xhrs.open("POST","/v1/images/upload",true);
+          xhrs.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhrs.send(json_url);
+          
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <textarea rows="10" columns="30" id="link"></textarea>
+    <button onclick="UploadFormater()">Upload</button>
+    <div id="result"></div>
+  </body>
+</html>
