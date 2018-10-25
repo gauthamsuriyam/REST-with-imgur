@@ -1,0 +1,3 @@
+stages:
+    - Build
+    - Run
