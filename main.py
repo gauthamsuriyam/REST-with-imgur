@@ -1,3 +1,4 @@
+import sys
 import tornado.ioloop
 import tornado.web
 import json
@@ -54,17 +55,20 @@ class StopServer(tornado.web.RequestHandler): #for closing tornado server: only 
 
 def main_app(): #initialize application
   return tornado.web.Application([
-    (r'/',UploadHandler),(r'/v1/images/upload',UploadHandler),(r'/v1/images/upload/\:([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',JobStatusHandler),(r'/v1/images',UploadedLinks)
-  ]) #url assignments
+    (r'/',UploadHandler),(r'/v1/images/upload',UploadHandler),(r'/v1/images/upload/\:([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})',JobStatusHandler),
+    (r'/v1/images',UploadedLinks),(r'/stopServer',StopServer)]) #url assignments
 
-def main(): #calls main
+def main(arg =""): #calls main
   app = main_app()
   app.listen(8888)
   print("log: application has started")
   try:
-    tornado.ioloop.IOLoop.instance().start()
+    if arg != "test":
+      tornado.ioloop.IOLoop.instance().start()
+    else:
+      print("this is a system test")
   except KeyboardInterrupt:
     print("interrupted")
 
 if __name__ == "__main__":
-  main()
+  main(str(sys.argv[1]))
